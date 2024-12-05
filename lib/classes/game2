@@ -423,6 +423,54 @@ Game.prototype.resetLevel = function() {
 }
 
 
+    // 3: cereza
+    // 4: fresa
+    // 5: naranja
+    // 6: campana
+    // 7: manzana
+    // 8: uvas
+    // 9: galaxian
+    // 10: llave
+Game.prototype.createBonus = function(){
+    let fruit;
+    let tile = [];
+    if((this.world.balls.remaining == 188 || this.world.balls.remaining == 88) && !this.prize_launched){ //cuando hemos comido 70 y 170 bolas
+        if(this.current_level == 1){
+            fruit = 3;
+        }
+        else if(this.current_level == 2){
+            fruit = 4;
+        }
+        else if(this.current_level == 3 || this.current_level == 4){
+            fruit = 5;
+        }
+        else if(this.current_level == 5 || this.current_level == 6){
+            fruit = 7;
+        }
+        else if(this.current_level == 7 || this.current_level == 8){
+            fruit = 8;
+        }
+        else if(this.current_level == 9 || this.current_level == 10){
+            fruit = 9;
+        }
+        else if(this.current_level == 11 || this.current_level == 12){
+            fruit = 6;
+        }
+        else if(this.current_level >= 13){
+            fruit = 10;
+        }
+
+        do{
+            tile = [Math.floor(Math.random() * NROWS), Math.floor(Math.random() * NCOLS)];
+        }
+        while(this.world.logical_map[tile[0]*NCOLS + tile[1]] == 0 || this.world.balls.matrix[tile[0]*NCOLS + tile[1]] != 0)
+        this.world.balls.matrix[tile[0]*NCOLS + tile[1]] = fruit;
+        this.prize_launched = true;
+        setInterval(this.removeBonus.bind(this, tile[0], tile[1]), 8000);
+    }
+}
+
+
 Game.prototype.removeBonus = function(row,col){
     this.world.balls.matrix[row*NCOLS + col] = 0;
 }
